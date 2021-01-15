@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC
+        "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 配置别名 -->
+    <typeAliases>
+
+    </typeAliases>
+
+    <!-- 配置环境变量 -->
+    <environments default="development">
+        <!--环境变量-->
+        <environment id="development">
+            <!--事物管理器-->
+            <transactionManager type="JDBC" />
+            <!--数据源-->
+            <dataSource type="POOLED">
+                <property name="driver" value="org.postgresql.Driver" />
+                <property name="url" value="jdbc:postgresql://${db.ip}:${db.port}/wireless?rewriteBatchedStatements=true" />
+                <property name="username" value="${db.username}" />
+                <property name="password" value="${db.password}" />
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!-- 配置mappers -->
+    <mappers>
+        <!-- Spark代码重构，新mapper -->
+        <mapper resource="mapper/OnlineDataMapper.xml" />
+        <mapper resource="mapper/OdsApLocationMapper.xml" />
+    </mappers>
+
+</configuration>

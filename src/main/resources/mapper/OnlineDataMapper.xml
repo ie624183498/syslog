@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.OnlineDataMapper">
+
+    <resultMap id="onlineDataMap" type="model.AllDataModel">
+        <id property="ip" column="ip" jdbcType="VARCHAR"/>
+        <id property="mac" column="mac" jdbcType="VARCHAR"/>
+        <id property="apName" column="ap_name" jdbcType="VARCHAR"/>
+        <id property="apSerialId" column="ap_serial_id" jdbcType="VARCHAR"/>
+        <id property="apMac" column="ap_mac" jdbcType="VARCHAR"/>
+        <id property="dataType" column="datatype" jdbcType="VARCHAR"/>
+        <id property="vendorName" column="vendor" jdbcType="VARCHAR"/>
+        <id property="systemName" column="system_name" jdbcType="VARCHAR"/>
+        <id property="onlineTime" column="online_time" jdbcType="TIMESTAMP"/>
+        <id property="offlineTime" column="offline_time" jdbcType="TIMESTAMP"/>
+        <id property="acName" column="ac_name" jdbcType="VARCHAR"/>
+        <id property="sessionIntegrity" column="session_integrity" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="patchSelect" resultMap="onlineDataMap">
+        SELECT ip,mac,vendor,ap_name,ap_serial_id,ap_mac,datatype,system_name,online_time,offline_time
+        FROM ods_online_data_temp
+        where 1=1;
+    </select>
+
+    <select id="selectOldData" resultMap="onlineDataMap">
+        SELECT ip,mac,vendor,ap_name,ap_serial_id,ap_mac,datatype,system_name,online_time
+        FROM ods_online_data_temp
+        where online_time &lt;= #{onlineTime,jdbcType=TIMESTAMP};
+    </select>
+
+    <delete id="deleteOldData">
+        DELETE FROM ods_online_data_temp
+        WHERE online_time &lt;= #{onlineTime,jdbcType=TIMESTAMP}
+    </delete>
+
+    <update  id="deleteOnlineData">
+        DELETE FROM ods_online_data_temp
+        WHERE offline_time is NULL
+    </update >
+
+    <insert id="insertOnlineData" parameterType="java.util.ArrayList" >
+        insert into ods_online_data_temp(ip,mac,vendor,ap_name,ap_serial_id,ap_mac,datatype,system_name,online_time,
+        offline_time,ac_name,session_integrity) values
+        <foreach collection="list" item="item" separator=",">(
+            #{item.ip,jdbcType=VARCHAR},
+            #{item.mac,jdbcType=VARCHAR},
+            #{item.vendorName,jdbcType=VARCHAR},
+            #{item.apName,jdbcType=VARCHAR},
+            #{item.apSerialId,jdbcType=VARCHAR},
+            #{item.apMac,jdbcType=VARCHAR},
+            #{item.dataType,jdbcType=VARCHAR},
+            #{item.systemName,jdbcType=VARCHAR},
+            #{item.onlineTime,jdbcType=TIMESTAMP},
+            #{item.offlineTime,jdbcType=TIMESTAMP},
+            #{item.acName,jdbcType=VARCHAR},
+            #{item.sessionIntegrity,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
+
+</mapper>

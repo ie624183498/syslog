@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="dao.OdsApLocationMapper">
+
+    <resultMap id="apDataMap" type="model.OdsApLocation">
+        <id property="mainId" column="id" jdbcType="INTEGER"/>
+        <id property="apSerialId" column="ap_serial_id" jdbcType="VARCHAR"/>
+        <id property="name" column="name" jdbcType="VARCHAR"/>
+        <id property="mac" column="mac" jdbcType="VARCHAR"/>
+        <id property="location" column="location" jdbcType="VARCHAR"/>
+        <id property="zone" column="zone" jdbcType="VARCHAR"/>
+        <id property="area" column="area" jdbcType="VARCHAR"/>
+        <id property="floor" column="floor" jdbcType="VARCHAR"/>
+        <id property="longitude" column="longitude" jdbcType="NUMERIC"/>
+        <id property="latitude" column="latitude" jdbcType="NUMERIC"/>
+        <id property="areaId" column="area_id" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="selectAllAp" resultMap="apDataMap">
+        select id,ap_serial_id,name,mac,location,zone,area,floor,longitude,latitude,area_id
+        from public.ods_ap_location
+        where 1=1
+    </select>
+
+
+</mapper>
